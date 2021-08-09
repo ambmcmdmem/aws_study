@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<!--<!DOCTYPE HTML>
 <html>
     <head>
         <meta charset="utf-8">
@@ -22,5 +22,9 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="static/build/test.js"></script>
     </body>
-</html>
+</html>-->
+<?php
 
+//require './blog/public/index.php';
+header('Location: http://18.183.188.134/blog/public/index.php');
+exit;
