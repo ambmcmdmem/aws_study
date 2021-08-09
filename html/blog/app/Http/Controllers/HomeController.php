@@ -24,19 +24,24 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $user = \Auth::user();
+        $memos = Memo::where('user_id', $user['id'])->where('status', 1)->orderby('updated_at', 'DESC')->get();
+        // dd($memos);
+        return view('home', compact('memos'), compact('user'));
     }
 
     public function create()
     {
         $user = \Auth::user();
-        return view('create', compact('user'));
+        $memos = Memo::where('user_id', $user['id'])->where('status', 1)->orderby('updated_at', 'DESC')->get();
+
+        return view('create', compact('user', 'memos'));
     }
     
     public function store(Request $request)
     {
         $data = $request->all();
-        // dd($data);
+        dd($data);
         // POSTされたデータをDB（memosテーブル）に挿入
         // MEMOモデルにDBへ保存する命令を出す
         $memo_id = Memo::insertGetId([
@@ -49,25 +54,25 @@ class HomeController extends Controller
         return redirect()->route('home');
     }
     
-    /*public function edit($id){
+    public function edit($id){
         // 該当するIDのメモをデータベースから取得
         $user = \Auth::user();
-        $memo = Memo::where('status', 1)->where('id', $id)->where('user_id', $user['id'])
-          ->first();
+        $memos = Memo::where('user_id', $user['id'])->where('status', 1)->orderby('updated_at', 'DESC')->get();
+        $memo = Memo::where('status', 1)->where('id', $id)->where('user_id', $user['id'])->first();
         //   dd($memo);
         //取得したメモをViewに渡す
-        return view('edit',compact('memo'));
+        return view('edit',compact('memo', 'memos', 'user'));
     }
 
     public function update(Request $request, $id)
     {
         $inputs = $request->all();
         // dd($inputs);
-        Memo::where('id', $id)->update(['content' => $inputs['content'], 'tag_id' => $inputs['tag_id'] ]);
+        Memo::where('id', $id)->update(['content' => $inputs['content']/*, 'tag_id' => $inputs['tag_id']*/ ]);
         return redirect()->route('home');
     }
 
-    public function delete(Request $request, $id)
+    /*public function delete(Request $request, $id)
     {
         $inputs = $request->all();
         // dd($inputs);
