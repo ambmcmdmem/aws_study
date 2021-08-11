@@ -26,7 +26,12 @@ class HomeController extends Controller
     public function index()
     {
         // dd($memos);
-        return view('create');
+        $tag = \Request::query('tag');
+        if(Tag::where('name', $tag)->exists() || empty($tag)) {
+            return view('create');
+        } else {
+            return redirect()->route('home');
+        }
     }
 
     public function create()
@@ -70,7 +75,11 @@ class HomeController extends Controller
         $memo = Memo::where('status', 1)->where('id', $id)->where('user_id', $user['id'])->first();
         //   dd($memo);
         //取得したメモをViewに渡す
-        return view('edit',compact('memo'));
+        if(empty($memo)) {
+            return redirect()->route('home');
+        } else {
+            return view('edit',compact('memo'));
+        }
     }
 
     public function update(Request $request, $id)
@@ -78,7 +87,7 @@ class HomeController extends Controller
         $inputs = $request->all();
         // dd($inputs);
         Memo::where('id', $id)->update(['content' => $inputs['content'], 'tag_id' => $inputs['tag_id'] ]);
-        return redirect()->route('home')->with('success', 'メモの更新が完了しました！');
+        return redirect()->route('edit', ['id' => $id])->with('success', 'メモの更新が完了しました！');
     }
 
     public function delete(Request $request, $id)
