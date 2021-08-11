@@ -26,5 +26,5 @@
 <?php
 
 //require './blog/public/index.php';
-header('Location: http://18.183.188.134/blog/public/index.php');
+//header('Location: http://13.230.46.20/blog/public/index.php');
 exit;

@@ -88,15 +88,18 @@
               <div class="card-header">タグ一覧</div>
               <div class="card-body py-2 px-4">
                 <a class='d-block' href='/'>全て表示</a>
+                @foreach($tags AS $tag)
+                <a href="/?tag={{ $tag['name'] }}" class="d-block">{{ $tag['name'] }}</a>
+                @endforeach
             　　</div>
               </div>
         　　</div>
             <div class="col-md-4 p-0">
               <div class="card h-100">
                 <div class="card-header d-flex">メモ一覧 <a class='ml-auto' href='/create'><i class="fas fa-plus-circle"></i></a></div>
-                <div class="card-body p-2">
+                <div class="card-body py-2 px-4">
                     @foreach($memos AS $memo)
-                    <a href="/edit/{{$memo['id']}}">{{ $memo['content'] }}</a>
+                    <a class="d-block" href="/edit/{{$memo['id']}}">{{ $memo['content'] }}</a>
                     @endforeach
                 </div>
               </div>    
